@@ -1,23 +1,30 @@
+import * as tf from '@tensorflow/tfjs';
+import { loadImage } from './core/utils';
+import { loadModels } from './core/modelLoader';
+import { detectChessboard } from './core/detectChessboard';
+import { cropImageToBox } from './core/cropImage';
+import { classifyBoard } from './core/classifyBoard';
+
+let models = null;
+
 /**
- * Stub function to convert chessboard image to FEN.
- *
  * @param {HTMLImageElement | HTMLCanvasElement | Blob | string} input
- * @returns {Promise<string>} A hardcoded FEN string
+ * @returns {Promise<string>}
  */
 export async function board2fen(input) {
-    await new Promise((res) => setTimeout(res, 300));
-  
-    if (typeof input === 'string') {
-      console.log('Input is base64 string');
-    } else if (input instanceof Blob) {
-      console.log('Input is Blob');
-    } else if (input instanceof HTMLImageElement) {
-      console.log('Input is HTMLImageElement');
-    } else if (input instanceof HTMLCanvasElement) {
-      console.log('Input is HTMLCanvasElement');
-    } else {
-      throw new Error('Unsupported input type');
-    }
-  
-    return 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+  const image = await loadImage(input);
+
+  if (!models) {
+    models = await loadModels('/nn/');
   }
+
+  const box = await detectChessboard(image, models.detectionModel);
+
+  if (!box) throw new Error('No chessboard detected');
+
+  const cropped = cropImageToBox(image, box);
+
+  const fen = classifyBoard(cropped, models);
+
+  return fen;
+}

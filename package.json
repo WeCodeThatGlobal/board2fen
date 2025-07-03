@@ -14,5 +14,13 @@
   "devDependencies": {
     "microbundle": "^0.15.1"
   },
-  "keywords": ["chess", "fen", "image-processing", "tensorflowjs"]
+  "keywords": [
+    "chess",
+    "fen",
+    "image-processing",
+    "tensorflowjs"
+  ],
+  "dependencies": {
+    "@tensorflow/tfjs": "^4.22.0"
+  }
 }
