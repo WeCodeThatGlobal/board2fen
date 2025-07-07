@@ -1,0 +1,20 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+venv/
+
+# VSCode settings (optional)
+.vscode/
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Logs and outputs
+*.log
+
+# Docker artifacts
+*.tar
