@@ -4,9 +4,15 @@ from app.predictor import predict_fen
 
 app = FastAPI()
 
+origins = [
+    "https://api.chessplay.io",
+    "https://api.saaschess.com",
+    "http://localhost:8000",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
