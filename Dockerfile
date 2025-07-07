@@ -18,8 +18,9 @@ COPY requirements.txt .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 5. Copy project files (excluding .dockerignore)
-COPY . .
+COPY app/ app/
+COPY requirements.txt .
+COPY weights/ weights/
 
 # 6. Expose FastAPI port
 EXPOSE 8000

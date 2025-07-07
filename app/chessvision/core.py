@@ -58,7 +58,6 @@ class ChessVision:
         self._classifier_weights = classifier_weights
         self._classifier_model_id = classifier_model_id
         self._board_extractor_path = board_extractor_weights
-        self._classifier_path = classifier_weights 
 
         if not lazy_load:
             logger.info("Eager loading models...")
@@ -302,7 +301,7 @@ class ChessVision:
         # Extract and process board
         board = utils.extract_perspective(orig_image, scaled_quad, constants.BOARD_SIZE)
         board = cv2.cvtColor(board, cv2.COLOR_BGR2GRAY)
-        board = cv2.flip(board, 1)  # TODO: permute approximation instead
+        board = cv2.flip(board, 1)
 
         return BoardExtractionResult(
             board_image=board,
@@ -367,7 +366,7 @@ class ChessVision:
         if len(contours) > 1:
             contours = ChessVision._filter_contours(
                 (mask.shape[0], mask.shape[1]),
-                contours,  # type: ignore
+                list(contours),
             )
 
         if not contours:

@@ -1,4 +1,4 @@
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from app.predictor import predict_fen
 
@@ -17,5 +17,7 @@ async def predict_fen_endpoint(file: UploadFile = File(...)):
     try:
         fen = await predict_fen(file)
         return {"fen": fen}
+    except (ValueError, FileNotFoundError) as e:
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        return {"error": str(e)}
+        raise HTTPException(status_code=500, detail="Internal Server Error")

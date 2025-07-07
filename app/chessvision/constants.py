@@ -36,7 +36,6 @@ LABEL_DESCRIPTIONS = [
     "Black Queen",
     "Black Rook",
     "Empty Square",
-    "Unknown",
 ]
 
 # Segmentation mapping

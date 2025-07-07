@@ -137,13 +137,14 @@ def load_yolo_classification_model(model_weights: str) -> torch.nn.Module:
             )
             raise
 
-    class YOLOModelWrapper:
+    class YOLOModelWrapper(torch.nn.Module):
         """Wrapper to make YOLO model behave like a classifier."""
 
         def __init__(self, model: YOLO):
+            super().__init__()
             self.model = model
 
-        def __call__(self, img: torch.Tensor) -> torch.Tensor:
+        def forward(self, img: torch.Tensor) -> torch.Tensor:
             """Forward pass that returns probabilities for each class."""
             res = self.model(img.repeat((1, 3, 1, 1)), verbose=False)
             return torch.vstack([r.probs.data for r in res])
@@ -156,8 +157,9 @@ def load_yolo_classification_model(model_weights: str) -> torch.nn.Module:
             """Set the model to training mode."""
             self.model.train()
 
-        def to(self, device: torch.device) -> None:
+        def to(self, device: torch.device) -> "YOLOModelWrapper":
             """Move the model to a specific device."""
             self.model.to(device)
+            return self
 
-    return YOLOModelWrapper(YOLO(model_weights))  # type: ignore[return-value]
+    return YOLOModelWrapper(YOLO(model_weights))
