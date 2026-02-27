@@ -3,8 +3,16 @@ from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import os
 from app.predictor import predict_fen
+import sentry_sdk
 
 load_dotenv()
+
+
+sentry_sdk.init(
+    dsn="https://5b25c7260016823fb7322639010e5903@sentry.wecodethat.com/6",
+    traces_sample_rate=1.0,
+    send_default_pii=True,
+)
 
 app = FastAPI()
 
