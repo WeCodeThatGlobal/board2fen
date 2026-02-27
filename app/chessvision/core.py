@@ -221,7 +221,7 @@ class ChessVision:
             if masks is None or masks.data is None:
                 raise ValueError("No segmentation mask returned from board extractor.")
 
-            logits = masks.data[0].squeeze().cpu().numpy()
+            logits = masks.data[0].squeeze().cpu().numpy().astype(np.float32)
 
         # Process predictions
         return self.process_board_extraction_logits(logits, image, threshold)
